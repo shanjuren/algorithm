@@ -10,6 +10,7 @@ import java.util.List;
  */
 public class BinaryTreeLevelOrderTraversal {
 
+
     static class TreeNode {
         int val;
         TreeNode left;
