@@ -41,6 +41,7 @@ public class PermutationsII {
         if(tmp.size()==nums.length) result.add(new ArrayList<>(tmp));
 
         int i = 0;
+        // 最多遍历数组长度的次数，剪枝在中间进行
         while(i<nums.length){
             // 求排列组合需要额外处理两种情况 当前节点不允许重复，需要遍历当前节点前面的节点
             int tmpIndex = (cur+i)%nums.length;
@@ -49,6 +50,9 @@ public class PermutationsII {
                 continue;
             }
             // 这里不使用while的原因是因为全排列的问题，需要按照当前顺序往下遍历%的场景
+            //保证在填第 idx\textit{idx}idx 个数的时候重复数字只会被填入一次即可。而在本题解中，我们选择对原数组排序，保证相同的数字都相邻，然后每次填入的数一定是这个数所在重复数集合中「从左往右第一个未被填过的数字」
+            //这个判断条件保证了对于重复数的集合，一定是从左往右逐个填入的。
+            // 通俗点理解就是 按顺序排后，前面的值和当前值相同，且前面的值还未使用说明前面的值已经参与了所有相同前缀的遍历，重点在于前缀相同不重复走下去，剪枝
             if(tmpIndex>0 && nums[tmpIndex]==nums[tmpIndex-1] && !used[tmpIndex-1]){
                 i++;
                 continue;
@@ -56,7 +60,7 @@ public class PermutationsII {
 //            while(i<(nums.length-1) && tmpIndex>0 && nums[tmpIndex]==nums[tmpIndex-1] && !used[tmpIndex-1]){
 //                i++;
 //            }
-
+            // 剪枝失败，说明前缀都未遍历过
             tmpIndex = (cur+i)%nums.length;
             tmp.add(nums[tmpIndex]);
             used[tmpIndex] = true;
