@@ -3,12 +3,11 @@ package com.algorithm.slidingWindow;
 /**
  * @author ght
  * @date 2022.04.11 10:17 AM
- * @description
- * 134. 加油站
+ * @description 134. 加油站
  * 在一条环路上有 n 个加油站，其中第 i 个加油站有汽油 gas[i] 升。
  * 你有一辆油箱容量无限的的汽车，从第 i 个加油站开往第 i+1 个加油站需要消耗汽油 cost[i] 升。你从其中的一个加油站出发，开始时油箱为空。
  * 给定两个整数数组 gas 和 cost ，如果你可以绕环路行驶一周，则返回出发时加油站的编号，否则返回 -1 。如果存在解，则 保证 它是 唯一 的。
- *
+ * <p>
  * 示例 1:
  * 输入: gas = [1,2,3,4,5], cost = [3,4,5,1,2]
  * 输出: 3
@@ -20,7 +19,7 @@ package com.algorithm.slidingWindow;
  * 开往 2 号加油站，此时油箱有 6 - 4 + 3 = 5 升汽油
  * 开往 3 号加油站，你需要消耗 5 升汽油，正好足够你返回到 3 号加油站。
  * 因此，3 可为起始索引。
- *
+ * <p>
  * 示例 2:
  * 输入: gas = [2,3,4], cost = [3,4,3]
  * 输出: -1
@@ -36,27 +35,28 @@ public class GasStation {
 
     public static int canCompleteCircuit(int[] gas, int[] cost) {
         int i = 0;
-        int n=gas.length;
+        int n = gas.length;
 
-        while (i<n){
-            int sumGas=0,sumCost=0;
-            int currentIndex=0;
+        while (i < n) {
+            int sumGas = 0, sumCost = 0;
+            int currentIndex = 0;
             // 只有当前current表示从当前带你触发到下一个站的数量，只有等于全部站数才表示全部遍历完成
-            while (currentIndex<n){
+            while (currentIndex < n) {
                 // 通过求余表示环
-                int j = (currentIndex+i)%n;
-                sumGas +=gas[j];
-                sumCost+=cost[j];
-                if(sumCost>sumGas){
+                int j = (currentIndex + i) % n;
+                sumGas += gas[j];
+                sumCost += cost[j];
+                if (sumCost > sumGas) {
                     break;
                 }
                 currentIndex++;
             }
-            if(currentIndex==n){
+            if (currentIndex == n) {
                 return i;
-            }else {
+            } else {
                 // 无需全部遍历，前面能走通可以直接从走通的点继续走下去
-                i=i+currentIndex+1;
+                // 剪枝方案：前面已经遍历的点到这里已经走不下了，从这个点开始重新走
+                i = i + currentIndex + 1;
             }
         }
         return -1;
@@ -67,24 +67,24 @@ public class GasStation {
         int n = gas.length;
         int i = 0;
         // 会超出时间限制
-        while(i<n){
-            int sumGas=0,sumCost=0;
-                    int hasRunStation=0;
-            while(hasRunStation<n){
+        while (i < n) {
+            int sumGas = 0, sumCost = 0;
+            int hasRunStation = 0;
+            while (hasRunStation < n) {
                 // 求余代表环
-                int tmpIndex = (i+hasRunStation)%n;
-                sumGas+=gas[tmpIndex];
-                sumCost+=cost[tmpIndex];
-                if(sumGas<sumCost){
+                int tmpIndex = (i + hasRunStation) % n;
+                sumGas += gas[tmpIndex];
+                sumCost += cost[tmpIndex];
+                if (sumGas < sumCost) {
                     // 没油了，走不下去
                     break;
                 }
                 hasRunStation++;
-                if(hasRunStation==n){
+                if (hasRunStation == n) {
                     return i;
-                }else {
+                } else {
                     // 无需重复遍历
-                    i = i+hasRunStation+1;
+                    i = i + hasRunStation + 1;
                 }
             }
         }
@@ -92,11 +92,10 @@ public class GasStation {
     }
 
 
-
     public static void main(String[] args) {
-        int[] gas= new int[]{1,2,3,4,5};
-        int[] cost = new int[]{3,4,5,1,2};
-        System.out.print(canCompleteCircuitV2(gas,cost));
+        int[] gas = new int[]{1, 2, 3, 4, 5};
+        int[] cost = new int[]{3, 4, 5, 1, 2};
+        System.out.print(canCompleteCircuitV2(gas, cost));
     }
 
 }
