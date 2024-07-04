@@ -45,6 +45,7 @@ public class MinimumDifference {
             return 0;
 
         }
+
         Arrays.sort(nums);
 
         int minNums = Integer.MAX_VALUE;
