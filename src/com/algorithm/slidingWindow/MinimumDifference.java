@@ -43,6 +43,7 @@ public class MinimumDifference {
 
         if(nums.length==0||nums.length==1 || nums.length<k){
             return 0;
+
         }
         Arrays.sort(nums);
 
