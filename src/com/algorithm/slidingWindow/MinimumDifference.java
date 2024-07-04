@@ -48,6 +48,7 @@ public class MinimumDifference {
         Arrays.sort(nums);
 
         int minNums = Integer.MAX_VALUE;
+
         for (int start = 0,end = 1; end < nums.length; end++) {
             if(end-start+1<k){
                 continue;
