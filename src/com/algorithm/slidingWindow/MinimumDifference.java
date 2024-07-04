@@ -56,6 +56,7 @@ public class MinimumDifference {
             if(end-start+1>k){
                 start++;
             }
+
             minNums = Math.min(minNums,nums[end]-nums[start]);
         }
         return minNums == Integer.MAX_VALUE ? 0 :minNums;
