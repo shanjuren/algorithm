@@ -37,9 +37,39 @@ package com.algorithm.slidingWindow;
 public class CharacterReplacement {
 
     public int characterReplacement(String s, int k) {
-        char[] chars = s.toCharArray();
-        // todo
-        return 0;
+
+        if (s.length() <= k) {
+            return s.length();
+        }
+
+
+       char[] source = s.toCharArray();
+       int[] charMaxCounts = new int[26];
+       int tmpMaxCount = 0;
+       int tmpMaxLength = 0;
+
+        for (int begin = 0,end = 0; end < s.length(); end++) {
+
+            // 右边界限移动
+            charMaxCounts[source[end]-'A']++;
+            tmpMaxCount = Math.max(tmpMaxCount,charMaxCounts[source[end]-'A']);
+
+            // 判断左边界是否移动
+            if((end-begin)>tmpMaxCount+k){
+                // end-begin-tmMaxCount = 剩余元素(需要被替换的元素)
+                charMaxCounts[source[begin]-'A']--;
+                begin++;
+            }
+            tmpMaxLength = Math.max(tmpMaxLength,end-begin);
+        }
+        return tmpMaxLength;
+    }
+
+
+
+    public static void main(String[] args) {
+        CharacterReplacement replacement = new CharacterReplacement();
+        System.out.println(replacement.characterReplacement("ABAB",2));
     }
 
 }
