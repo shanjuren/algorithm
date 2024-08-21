@@ -1,6 +1,7 @@
 package com.algorithm.monotonicStack;
 
 import java.util.LinkedList;
+import java.util.Stack;
 
 /**
  * @author ght
@@ -42,7 +43,7 @@ public class MaximumSubarrayMinProduct {
      * @param nums
      * @return
      */
-    public static int maxSumMinProduct(int[] nums) {
+    public static int   maxSumMinProduct(int[] nums) {
        // 先计算出一个阶梯数组，用来计算sum时可以变成O(n)
        long[] sums = new long[nums.length];
        sums[0] = nums[0];
@@ -77,29 +78,51 @@ public class MaximumSubarrayMinProduct {
     }
 
 
-//    public static int maxSumMinProduct(int[] arr) {
-//        int size = arr.length;
-//        long[] sums = new long[size];
-//        sums[0] = arr[0];
-//        for (int i = 1; i < size; i++) {
-//            sums[i] = sums[i - 1] + arr[i];
-//        }
-//        long max = Long.MIN_VALUE;
-//        int[] stack = new int[size];
-//        int stackSize = 0;
-//        for (int i = 0; i < size; i++) {
-//            while (stackSize != 0 && arr[stack[stackSize - 1]] >= arr[i]) {
-//                int j = stack[--stackSize];
-//                max = Math.max(max,(stackSize == 0 ? sums[i - 1] : (sums[i - 1] - sums[stack[stackSize - 1]])) * arr[j]);
-//            }
-//            stack[stackSize++] = i;
-//        }
-//        while (stackSize != 0) {
-//            int j = stack[--stackSize];
-//            max = Math.max(max,(stackSize == 0 ? sums[size - 1] : (sums[size - 1] - sums[stack[stackSize - 1]])) * arr[j]);
-//        }
-//        return (int) (max % 1000000007);
-//    }
+    /**
+     * 单调栈 递增顺序，这样最后面的哪个数字一定是最小的数字
+     *
+     * 但是为什么要递增呢？递减不行吗？ 当然不行， 不递增在出栈时就找到两边的边界
+     *
+     * @param nums
+     * @return
+     */
+    public static int maxSumMinProduct2(int[] nums) {
+
+        if(nums == null || nums.length==0){
+            return 0;
+        }
+
+        // 这里可以做优化，先计算出 宽度
+        // 这里必须是long不然会有越界问题
+        long[] sums = new long[nums.length];
+        sums[0] = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            sums[i] = sums[i-1] + nums[i];
+        }
+
+        // 开始遍历
+        long maxSum = 0;
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < nums.length; i++) {
+            while (!stack.isEmpty() && nums[stack.peek()]>=nums[i]){
+                // 出栈元素保持升序
+                int tmpIndex = stack.pop();
+                long tmpSum = sums[i - 1] - (stack.isEmpty() ? 0 : sums[stack.peek()]);
+                long tmpProduct = tmpSum * nums[tmpIndex];
+                maxSum = Math.max(tmpProduct,maxSum);
+            }
+            stack.push(i);
+        }
+
+        while (!stack.isEmpty()){
+            // 剩下的都是小卡拉米
+            int tmpIndex = stack.pop();
+            long tmpSum = sums[nums.length-1] - (stack.isEmpty()?0:sums[stack.peek()]);
+            long tmpProduct = tmpSum * nums[tmpIndex];
+            maxSum = Math.max(tmpProduct,maxSum);
+        }
+        return (int) (maxSum % 1000000007);
+    }
 
 
     public static void main(String[] args) {
