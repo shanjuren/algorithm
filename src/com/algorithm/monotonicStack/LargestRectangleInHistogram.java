@@ -28,30 +28,39 @@ public class LargestRectangleInHistogram {
      * @return
      */
     public static int largestRectangleArea(int[] height) {
+
         if (height == null || height.length == 0) {
             return 0;
         }
+
         int maxArea = 0;
-        Stack<Integer> stack = new Stack<Integer>();
+        Stack<Integer> stack = new Stack<>();
         for (int i = 0; i < height.length; i++) {
-            while (!stack.isEmpty() && height[i] <= height[stack.peek()]) {
-                int j = stack.pop();
-                int k = stack.isEmpty() ? -1 : stack.peek();
-                int curArea = (i - k - 1) * height[j];
+            while (!stack.isEmpty() && height[i] < height[stack.peek()]) {
+                int curIndex = stack.pop();
+                int left = stack.isEmpty() ? -1 : stack.peek();
+                int right = i;
+                int curArea = (right - left - 1) * height[curIndex];
                 maxArea = Math.max(maxArea, curArea);
             }
             stack.push(i);
         }
+
+        // 还有未出栈的一些数字，说明这些数字水位都能到最后一位
         while (!stack.isEmpty()) {
-            int j = stack.pop();
-            int k = stack.isEmpty() ? -1 : stack.peek();
-            int curArea = (height.length - k - 1) * height[j];
+            int curIndex = stack.pop();
+            int left = stack.isEmpty() ? -1 : stack.peek();
+            int right = height.length;
+            // 宽度的结算公式
+            int curArea = (right - left - 1) * height[curIndex];
             maxArea = Math.max(maxArea, curArea);
         }
         return maxArea;
     }
 
+
     public static void main(String[] args) {
+
         int[] test = new int[]{2,1,5,6,2,3};
         System.out.print(largestRectangleArea(test));
     }
