@@ -35,6 +35,8 @@ package com.algorithm.monotonicStack;
 public class CountSubmatricesWithAllOnes {
 
     public static int numSubmat(int[][] mat){
+
+
         return 0;
     }
 }
