@@ -51,6 +51,8 @@ public class CheckInclusion {
         if(Arrays.equals(sources,targets)){
             return true;
         }
+
+        // 滑动窗口，上面已经预设了窗口Source，下面开始匹配Target
         for (int i = sourceLength; i < targetLength; i++) {
             ++targets[s2.charAt(i)-'a'];
             --targets[s2.charAt(i-sourceLength)-'a'];
