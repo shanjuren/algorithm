@@ -30,7 +30,7 @@ public class CourseSchedule {
 
     public boolean canFinish(int numCourses, int[][] prerequisites) {
 
-        // 入度表
+        // 入度表  https://www.imooc.com/wenda/detail/430859  出入度含义
         int[] inDegree = new int[numCourses];
 
         // 各个节点依赖关系
@@ -68,6 +68,7 @@ public class CourseSchedule {
                 }
             }
         }
+        // 剩余的是循环或
         return numCourses>0?false:true;
     }
 
